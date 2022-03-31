@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-19nc8k^af!yry-*2gf6y6)%)#k1z(x=7k2@+-yp_tegrjf@x0t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-env.eba-bnqpbu2a.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -80,12 +80,8 @@ AUTH_USER_MODEL = 'accounts.Account'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'demo_1',
-        'USER': 'dennisivy',
-        'PASSWORD': 'samandar1',
-        'HOST': 'database-1.ceevbpvjwbki.us-west-2.rds.amazonaws.com',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

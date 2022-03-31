@@ -43,23 +43,26 @@ def add_cart(request, product_id):
         # current vatiation -> product_variation
         # item_id -> databese
         ex_var_list = []
+        id = []
         for item in cart_item:
-            existing_vatiations = item.variations.all()
-            ex_var_list.append(existing_vatiations)
+            existing_variation = item.variations.all()
+            ex_var_list.append(list(existing_variation))
+            id.append(item.id)
+        
+        print(ex_var_list)
 
         if product_variation in ex_var_list:
-            return HttpResponse('true')
+            index = ex_var_list.index(product_variation)
+            item_id = id[index]
+            item = CartItem.objects.get(product=product,id=item_id)
+            item.quantity += 1
+            item.save()
         else:
-            return ('false')
-        exit()
-
-
-        if len(product_variation) > 0:
-            cart_item.variations.clear()
-            for item in product_variation:
-                cart_item.variations.add(item)
-        # cart_item.quantity += 1
-        cart_item.save()
+            item = CartItem.objects.create(product=product, quantity =1, cart=cart)
+            if len(product_variation) > 0:
+                item.variations.clear()
+                item.variations.add(*product_variation)
+            item.save()
     else:
         cart_item = CartItem.objects.create(
             product=product,
@@ -68,8 +71,7 @@ def add_cart(request, product_id):
         )
         if len(product_variation) > 0:
             cart_item.variations.clear()
-            for item in product_variation:
-                cart_item.variations.add(item)
+            cart_item.variations.add(*product_variation)
         cart_item.save()
     return redirect('cart')
 
